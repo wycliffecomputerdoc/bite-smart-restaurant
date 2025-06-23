@@ -1,0 +1,137 @@
+
+import { useState } from 'react';
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Menu, X, ChefHat, ShoppingCart, Calendar, User, Home, Phone } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
+
+const Navigation = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const navItems = [
+    { name: 'Home', path: '/', icon: Home },
+    { name: 'Menu', path: '/menu', icon: ChefHat },
+    { name: 'Reservations', path: '/reservations', icon: Calendar },
+    { name: 'Orders', path: '/orders', icon: ShoppingCart },
+    { name: 'Contact', path: '/contact', icon: Phone },
+  ];
+
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    setIsMenuOpen(false);
+  };
+
+  const isActivePath = (path: string) => {
+    return location.pathname === path;
+  };
+
+  return (
+    <nav className="bg-white/95 backdrop-blur-md shadow-lg sticky top-0 z-40 border-b border-orange-100">
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="flex justify-between items-center py-4">
+          {/* Logo */}
+          <div 
+            className="flex items-center space-x-2 cursor-pointer hover-scale transition-transform duration-200"
+            onClick={() => handleNavigation('/')}
+          >
+            <div className="bg-gradient-to-r from-orange-600 to-red-600 p-2 rounded-lg">
+              <ChefHat className="h-6 w-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+                SmartBite
+              </h1>
+              <Badge className="bg-orange-100 text-orange-800 text-xs px-1 py-0">
+                AI-Powered
+              </Badge>
+            </div>
+          </div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-1">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Button
+                  key={item.name}
+                  variant={isActivePath(item.path) ? "default" : "ghost"}
+                  className={`flex items-center space-x-2 transition-all duration-200 ${
+                    isActivePath(item.path) 
+                      ? "bg-gradient-to-r from-orange-600 to-red-600 text-white" 
+                      : "text-gray-700 hover:text-orange-600 hover:bg-orange-50"
+                  }`}
+                  onClick={() => handleNavigation(item.path)}
+                >
+                  <Icon className="h-4 w-4" />
+                  <span>{item.name}</span>
+                </Button>
+              );
+            })}
+          </div>
+
+          {/* User Actions */}
+          <div className="hidden md:flex items-center space-x-3">
+            <Button
+              variant="outline"
+              className="border-orange-600 text-orange-600 hover:bg-orange-600 hover:text-white transition-all duration-200"
+              onClick={() => handleNavigation('/profile')}
+            >
+              <User className="h-4 w-4 mr-2" />
+              Sign In
+            </Button>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <Button
+            variant="ghost"
+            size="sm"
+            className="md:hidden p-2"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </Button>
+        </div>
+
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <div className="md:hidden py-4 border-t border-orange-100 animate-fade-in">
+            <div className="flex flex-col space-y-2">
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Button
+                    key={item.name}
+                    variant={isActivePath(item.path) ? "default" : "ghost"}
+                    className={`flex items-center space-x-2 justify-start transition-all duration-200 ${
+                      isActivePath(item.path) 
+                        ? "bg-gradient-to-r from-orange-600 to-red-600 text-white" 
+                        : "text-gray-700 hover:text-orange-600 hover:bg-orange-50"
+                    }`}
+                    onClick={() => handleNavigation(item.path)}
+                  >
+                    <Icon className="h-4 w-4" />
+                    <span>{item.name}</span>
+                  </Button>
+                );
+              })}
+              <div className="pt-2 border-t border-orange-100">
+                <Button
+                  variant="outline"
+                  className="w-full border-orange-600 text-orange-600 hover:bg-orange-600 hover:text-white transition-all duration-200"
+                  onClick={() => handleNavigation('/profile')}
+                >
+                  <User className="h-4 w-4 mr-2" />
+                  Sign In
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </nav>
+  );
+};
+
+export default Navigation;
