@@ -9,6 +9,45 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      orders: {
+        Row: {
+          created_at: string | null
+          customer_info: Json | null
+          delivery_address: string | null
+          id: string
+          items: Json
+          payment_method: string | null
+          payment_status: string | null
+          total_amount: number
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          customer_info?: Json | null
+          delivery_address?: string | null
+          id?: string
+          items: Json
+          payment_method?: string | null
+          payment_status?: string | null
+          total_amount: number
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          customer_info?: Json | null
+          delivery_address?: string | null
+          id?: string
+          items?: Json
+          payment_method?: string | null
+          payment_status?: string | null
+          total_amount?: number
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -36,6 +75,48 @@ export type Database = {
         }
         Relationships: []
       }
+      reservations: {
+        Row: {
+          created_at: string | null
+          deposit_amount: number | null
+          guests: number
+          id: string
+          payment_method: string | null
+          payment_status: string | null
+          reservation_date: string
+          reservation_time: string
+          special_requests: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          deposit_amount?: number | null
+          guests: number
+          id?: string
+          payment_method?: string | null
+          payment_status?: string | null
+          reservation_date: string
+          reservation_time: string
+          special_requests?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          deposit_amount?: number | null
+          guests?: number
+          id?: string
+          payment_method?: string | null
+          payment_status?: string | null
+          reservation_date?: string
+          reservation_time?: string
+          special_requests?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       table_name: {
         Row: {
           data: Json | null
@@ -57,6 +138,39 @@ export type Database = {
           inserted_at?: string
           name?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      user_profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          email: string | null
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }

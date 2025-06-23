@@ -2,13 +2,17 @@
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Menu, X, ChefHat, ShoppingCart, Calendar, User, Home, Phone } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Menu, X, ChefHat, ShoppingCart, Calendar, User, Home, Phone, LogOut } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, userProfile, signOut } = useAuth();
 
   const navItems = [
     { name: 'Home', path: '/', icon: Home },
@@ -21,6 +25,11 @@ const Navigation = () => {
   const handleNavigation = (path: string) => {
     navigate(path);
     setIsMenuOpen(false);
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
   };
 
   const isActivePath = (path: string) => {
@@ -73,14 +82,39 @@ const Navigation = () => {
 
           {/* User Actions */}
           <div className="hidden md:flex items-center space-x-3">
-            <Button
-              variant="outline"
-              className="border-orange-600 text-orange-600 hover:bg-orange-600 hover:text-white transition-all duration-200"
-              onClick={() => handleNavigation('/profile')}
-            >
-              <User className="h-4 w-4 mr-2" />
-              Sign In
-            </Button>
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                    <Avatar className="h-10 w-10">
+                      <AvatarImage src={userProfile?.avatar_url} alt={userProfile?.full_name || user.email} />
+                      <AvatarFallback>
+                        {userProfile?.full_name?.[0] || user.email?.[0]?.toUpperCase() || 'U'}
+                      </AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <DropdownMenuItem onClick={() => handleNavigation('/profile')}>
+                    <User className="mr-2 h-4 w-4" />
+                    <span>Profile</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleSignOut}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Sign out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button
+                variant="outline"
+                className="border-orange-600 text-orange-600 hover:bg-orange-600 hover:text-white transition-all duration-200"
+                onClick={() => handleNavigation('/profile')}
+              >
+                <User className="h-4 w-4 mr-2" />
+                Sign In
+              </Button>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -117,14 +151,44 @@ const Navigation = () => {
                 );
               })}
               <div className="pt-2 border-t border-orange-100">
-                <Button
-                  variant="outline"
-                  className="w-full border-orange-600 text-orange-600 hover:bg-orange-600 hover:text-white transition-all duration-200"
-                  onClick={() => handleNavigation('/profile')}
-                >
-                  <User className="h-4 w-4 mr-2" />
-                  Sign In
-                </Button>
+                {user ? (
+                  <div className="space-y-2">
+                    <div className="flex items-center space-x-2 px-3 py-2">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src={userProfile?.avatar_url} alt={userProfile?.full_name || user.email} />
+                        <AvatarFallback>
+                          {userProfile?.full_name?.[0] || user.email?.[0]?.toUpperCase() || 'U'}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span className="text-sm text-gray-700">{userProfile?.full_name || user.email}</span>
+                    </div>
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start"
+                      onClick={() => handleNavigation('/profile')}
+                    >
+                      <User className="h-4 w-4 mr-2" />
+                      Profile
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start"
+                      onClick={handleSignOut}
+                    >
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Sign Out
+                    </Button>
+                  </div>
+                ) : (
+                  <Button
+                    variant="outline"
+                    className="w-full border-orange-600 text-orange-600 hover:bg-orange-600 hover:text-white transition-all duration-200"
+                    onClick={() => handleNavigation('/profile')}
+                  >
+                    <User className="h-4 w-4 mr-2" />
+                    Sign In
+                  </Button>
+                )}
               </div>
             </div>
           </div>
