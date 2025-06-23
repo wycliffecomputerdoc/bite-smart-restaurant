@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { User, Mail, Phone, MapPin, Calendar, ShoppingCart, MessageCircle, Edit3 } from "lucide-react";
+import { User, Mail, Phone, MapPin, Calendar, ShoppingCart, MessageCircle, Edit3, Users } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import ChatBot from "@/components/ChatBot";
 import { toast } from "sonner";
