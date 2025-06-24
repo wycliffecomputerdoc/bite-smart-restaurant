@@ -7,9 +7,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Menu, X, ChefHat, ShoppingCart, Calendar, User, Home, Phone, LogOut, Settings } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import ThemeToggle from "./ThemeToggle";
 
-const Navigation = () => {
+const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -43,7 +42,7 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="bg-white/95 backdrop-blur-md shadow-lg sticky top-0 z-40 border-b border-orange-100 dark:bg-gray-900/95 dark:border-gray-700">
+    <header className="bg-white/95 backdrop-blur-md shadow-lg sticky top-0 z-40 border-b border-orange-100">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
@@ -58,14 +57,14 @@ const Navigation = () => {
               <h1 className="text-xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
                 SmartBite
               </h1>
-              <Badge className="bg-orange-100 text-orange-800 text-xs px-1 py-0 dark:bg-orange-900 dark:text-orange-200">
+              <Badge className="bg-orange-100 text-orange-800 text-xs px-1 py-0">
                 AI-Powered
               </Badge>
             </div>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
+          <nav className="hidden md:flex items-center space-x-1">
             {navItems.map((item) => {
               const Icon = item.icon;
               return (
@@ -75,7 +74,7 @@ const Navigation = () => {
                   className={`flex items-center space-x-2 transition-all duration-200 ${
                     isActivePath(item.path) 
                       ? "bg-gradient-to-r from-orange-600 to-red-600 text-white" 
-                      : "text-gray-700 hover:text-orange-600 hover:bg-orange-50 dark:text-gray-300 dark:hover:text-orange-400 dark:hover:bg-gray-800"
+                      : "text-gray-700 hover:text-orange-600 hover:bg-orange-50"
                   }`}
                   onClick={() => handleNavigation(item.path)}
                 >
@@ -84,11 +83,10 @@ const Navigation = () => {
                 </Button>
               );
             })}
-          </div>
+          </nav>
 
           {/* User Actions */}
           <div className="hidden md:flex items-center space-x-3">
-            <ThemeToggle />
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -143,7 +141,7 @@ const Navigation = () => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-orange-100 animate-fade-in dark:border-gray-700">
+          <div className="md:hidden py-4 border-t border-orange-100 animate-fade-in">
             <div className="flex flex-col space-y-2">
               {navItems.map((item) => {
                 const Icon = item.icon;
@@ -154,7 +152,7 @@ const Navigation = () => {
                     className={`flex items-center space-x-2 justify-start transition-all duration-200 ${
                       isActivePath(item.path) 
                         ? "bg-gradient-to-r from-orange-600 to-red-600 text-white" 
-                        : "text-gray-700 hover:text-orange-600 hover:bg-orange-50 dark:text-gray-300 dark:hover:text-orange-400 dark:hover:bg-gray-800"
+                        : "text-gray-700 hover:text-orange-600 hover:bg-orange-50"
                     }`}
                     onClick={() => handleNavigation(item.path)}
                   >
@@ -163,11 +161,7 @@ const Navigation = () => {
                   </Button>
                 );
               })}
-              <div className="pt-2 border-t border-orange-100 dark:border-gray-700">
-                <div className="flex items-center justify-between px-3 py-2">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">Theme</span>
-                  <ThemeToggle />
-                </div>
+              <div className="pt-2 border-t border-orange-100">
                 {user ? (
                   <div className="space-y-2">
                     <div className="flex items-center space-x-2 px-3 py-2">
@@ -177,7 +171,7 @@ const Navigation = () => {
                           {userProfile?.full_name?.[0] || user.email?.[0]?.toUpperCase() || 'U'}
                         </AvatarFallback>
                       </Avatar>
-                      <span className="text-sm text-gray-700 dark:text-gray-300">{userProfile?.full_name || user.email}</span>
+                      <span className="text-sm text-gray-700">{userProfile?.full_name || user.email}</span>
                     </div>
                     <Button
                       variant="outline"
@@ -211,8 +205,8 @@ const Navigation = () => {
           </div>
         )}
       </div>
-    </nav>
+    </header>
   );
 };
 
-export default Navigation;
+export default Header;
