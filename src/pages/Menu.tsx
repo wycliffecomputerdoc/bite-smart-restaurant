@@ -1,12 +1,13 @@
-
 import { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, Plus, Star, Filter, ShoppingCart } from "lucide-react";
+import { Search, Plus, Star, Filter, ShoppingCart, Wand2 } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import Navigation from "@/components/Navigation";
 import ChatBot from "@/components/ChatBot";
+import ImageGenerator from "@/components/ImageGenerator";
 
 interface MenuItem {
   id: string;
@@ -25,6 +26,7 @@ const Menu = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [cart, setCart] = useState<{[key: string]: number}>({});
+  const [isImageGenOpen, setIsImageGenOpen] = useState(false);
 
   const categories = ['All', 'Appetizers', 'Main Courses', 'Desserts', 'Beverages'];
 
@@ -125,9 +127,28 @@ const Menu = () => {
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             Our <span className="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">Menu</span>
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-6">
             Discover our carefully crafted dishes made with the finest ingredients
           </p>
+          
+          {/* AI Image Generation Button */}
+          <Dialog open={isImageGenOpen} onOpenChange={setIsImageGenOpen}>
+            <DialogTrigger asChild>
+              <Button 
+                variant="outline" 
+                className="mb-6 border-orange-600 text-orange-600 hover:bg-orange-600 hover:text-white"
+              >
+                <Wand2 className="h-4 w-4 mr-2" />
+                Generate Food Images with AI
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-3xl">
+              <DialogHeader>
+                <DialogTitle>AI Food Image Generator</DialogTitle>
+              </DialogHeader>
+              <ImageGenerator />
+            </DialogContent>
+          </Dialog>
         </div>
 
         {/* Search and Filters */}
