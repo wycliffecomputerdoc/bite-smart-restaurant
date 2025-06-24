@@ -1,9 +1,9 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { X, Send, MessageCircle, Mic, MicOff } from "lucide-react";
 
 interface Message {
@@ -170,44 +170,46 @@ const ChatBot = ({ isOpen, onClose }: ChatBotProps) => {
           </div>
         </CardHeader>
         
-        <CardContent className="flex-1 flex flex-col p-0">
-          {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
-              >
+        <CardContent className="flex-1 flex flex-col p-0 overflow-hidden">
+          {/* Messages Area with ScrollArea */}
+          <ScrollArea className="flex-1 px-4">
+            <div className="py-4 space-y-4">
+              {messages.map((message) => (
                 <div
-                  className={`max-w-[80%] p-3 rounded-lg ${
-                    message.isUser
-                      ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white'
-                      : 'bg-gray-100 text-gray-900'
-                  }`}
+                  key={message.id}
+                  className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
                 >
-                  <p className="text-sm leading-relaxed">{message.text}</p>
-                  <p className={`text-xs mt-1 ${
-                    message.isUser ? 'text-orange-100' : 'text-gray-500'
-                  }`}>
-                    {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </p>
-                </div>
-              </div>
-            ))}
-            
-            {isTyping && (
-              <div className="flex justify-start">
-                <div className="bg-gray-100 p-3 rounded-lg">
-                  <div className="flex space-x-1">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                  <div
+                    className={`max-w-[80%] p-3 rounded-lg ${
+                      message.isUser
+                        ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white'
+                        : 'bg-gray-100 text-gray-900'
+                    }`}
+                  >
+                    <p className="text-sm leading-relaxed">{message.text}</p>
+                    <p className={`text-xs mt-1 ${
+                      message.isUser ? 'text-orange-100' : 'text-gray-500'
+                    }`}>
+                      {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </p>
                   </div>
                 </div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
+              ))}
+              
+              {isTyping && (
+                <div className="flex justify-start">
+                  <div className="bg-gray-100 p-3 rounded-lg">
+                    <div className="flex space-x-1">
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <div ref={messagesEndRef} />
+            </div>
+          </ScrollArea>
           
           {/* Input Area */}
           <div className="border-t border-gray-200 p-4 flex-shrink-0">
