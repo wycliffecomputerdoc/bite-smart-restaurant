@@ -8,7 +8,7 @@ interface GoogleMapsEmbedProps {
 }
 
 const GoogleMapsEmbed = ({ apiKey, address, className = "w-full h-64" }: GoogleMapsEmbedProps) => {
-  const mapRef = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
     if (!apiKey) {
